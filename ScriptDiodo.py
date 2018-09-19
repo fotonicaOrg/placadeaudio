@@ -61,5 +61,7 @@ Vmean = np.mean(L[np.abs(R)<0.025])*calibracion
 plt.figure()
 #plt.plot(V,I)
 #plt.figure()
-plt.plot(V + Vmean, I_smooth-Vmean/resistencia*1000)
+plt.plot(V + Vmean, 1000*(I_smooth-Vmean/resistencia*1000))
 plt.grid()
+plt.xlabel('Tensión (V)')
+plt.ylabel('Corriente (mA)')
