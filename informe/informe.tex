@@ -11,6 +11,8 @@
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[colorlinks=true]{hyperref}
 
+\usepackage{booktabs}
+
 
 \title{Preinforme: Caracterización de componentes electrónicos utilizando una placa de audio}
 \date{\today}
@@ -193,13 +195,45 @@ En esta sección se describiran los resultados de las caracterizaciones de los c
 		
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\textwidth]{imagenes/circuitolm317.jpg}
+		\includegraphics[width=\textwidth]{imagenes/lm317}
 		\caption{Circuito propuesto para la caracterización del rechazo de ripple en un integrado LM317.}
 		\label{fig:lm317}
 	\end{figure}
 
 \clearpage
 
+\section{Características eléctricas}
+
+    \subsection{Placa de audio \emph{Realtek}}
+
+%\begin{tabular}{llr}  
+%\toprule
+%\multicolumn{2}{c}{Item} \\
+%\cmidrule(r){1-2}
+%Animal    & Description & Price (\$) \\
+%\midrule
+%Gnat      & per gram    & 13.65      \\
+%          &    each     & 0.01       \\
+%Gnu       & stuffed     & 92.50      \\
+%Emu       & stuffed     & 33.33      \\
+%Armadillo & frozen      & 8.99       \\
+%\bottomrule
+%\end{tabular}
+
+\begin{table}
+\begin{tabular}{llcccc}  
+\toprule
+PARÁMETRO   & CONDICIONES DE PRUEBA &   MIN &   TYP &   MAX &   UNIDAD\\
+\midrule
+            &                       &       &       &       & \\
+\bottomrule
+\end{tabular}
+    \subsection{Diodo 1N4148}
+
+
+    \subsection{Integrado LM317}
+
+\clearpage
 \begin{thebibliography}{99}
 
 	\bibitem{repo} Repositorio en GitHub de la biblioteca propia utilizada en el trabajo, \href{https://github.com/fotonicaOrg/placadeaudio}{URL: https://github.com/fotonicaOrg/placadeaudio}, actualizado el 19/09/2018. La biblioteca está programada en el archivo \emph{PlacaAudio.py}.
