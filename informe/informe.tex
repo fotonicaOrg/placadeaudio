@@ -34,13 +34,12 @@ El objetivo de este trabajo consiste en describir la curva de respuesta de un di
 	
 	La comunicación con la placa de sonido se basa en el paradigma de \emph{callbacks} de entrada y salida, que consiste en funciones que se ejecutan en bucles concurrentes y realizan respectivamente la lectura y escritura de los \emph{buffers} que el sistema operativo dispone para el dispositivo para grabar y reproducir audio. En la implementación de nuestra librería, cada función \emph{callback} cuenta con un \emph{buffer} circular propio tipo FIFO (\emph{first input, first output}) que alojan la señal que se quiere emitir (en el caso del \emph{callback} de salida) y la señal que se está registrando (en el caso del \emph{callback} de entrada). En cada iteración de ambos bucles se transfiere un paquete de datos de tamaño fijo y configurable que se guarda en el correspondiente \emph{buffer} de forma cíclica, permitiendo una ejecución continua similar a la obtenida en un generador de funciones y un osciloscopio, donde las interrupciones en la ejecución debido a problemas de latencia pueden ser evitadas ajustando debidamente los tamaños del paquete y del \emph{buffer}.
 
-	La figura \ref{fig:flowchart} muestra el diagrama de flujo de un proceso de emisión y adquisición de señales con la placa de audio. La primera etapa comprende la inicialización de los parámetros de funcionamiento y la generación de las señales de salida a partir de una función que sintetiza y guarda en la memoria señales con formas de onda típicas cuyas características (amplitud, frecuencia, etc.) son configurables. En esta etapa además se emplean funciones auxiliares para calibrar la señales a unidades de tensión y para multiplexar los canales en orden de poder trabajar con dos canales (modo estéreo de la placa de audio). En la sección \ref{sec:caracterizacion} describiremos los análisis que nos permitieron desarrollar estas funciones. Posteriormente se prealoja la memoria de los \emph{buffers} y se inicializan los contadores y variables auxiliares necesarias para el funcionamiento de los \emph{callbacks}. Posteriormente se inicia el proceso de lectura y escritura abriendo los flujos de datos y desencadenando la ejecución concurrente de los bucles de lectura y escritura. El programa espera hasta la finalización de ambos flujos una vez que se alcanza el límite de datos transferidos establecido, momento en el cual se procede a cerrar los flujos de lectura y escritura y a demultiplexar y calibrar las señales adquiridas de forma análoga a lo realizado con las señales emitidas.
+	La fig. \ref{fig:flowchart} muestra el diagrama de flujo de un proceso de emisión y adquisición de señales con la placa de audio. La primera etapa comprende la inicialización de los parámetros de funcionamiento y la generación de las señales de salida a partir de una función que sintetiza y guarda en la memoria señales con formas de onda típicas cuyas características (amplitud, frecuencia, etc.) son configurables. En esta etapa además se emplean funciones auxiliares para calibrar la señales a unidades de tensión y para multiplexar los canales en orden de poder trabajar con dos canales (modo estéreo de la placa de audio). En la sección \ref{sec:caracterizacion} describiremos los análisis que nos permitieron desarrollar estas funciones. Posteriormente se prealoja la memoria de los \emph{buffers} y se inicializan los contadores y variables auxiliares necesarias para el funcionamiento de los \emph{callbacks}. Posteriormente se inicia el proceso de lectura y escritura abriendo los flujos de datos y desencadenando la ejecución concurrente de los bucles de lectura y escritura. El programa espera hasta la finalización de ambos flujos una vez que se alcanza el límite de datos transferidos establecido, momento en el cual se procede a cerrar los flujos de lectura y escritura y a demultiplexar y calibrar las señales adquiridas de forma análoga a lo realizado con las señales emitidas.
 	
     \begin{figure}[!h] 
         \centering
         \includegraphics[width=0.7\textwidth]{imagenes/flowchart.pdf}
-        \caption{Diagrama de flujo.
-        }
+        \caption{Diagrama de flujo para el software de control de la placa de audio implementado en Python. Código disponible en GitHub \cite{repo}.}
         \label{fig:flowchart}
  
     \end{figure}
@@ -59,7 +58,7 @@ de entrada analógica estéreo \emph{line-in}, respectivamente.
 
 Al adquirir señales estéreo con la placa de sonido, esta multiplexa las
 señales de los dos canales en un mismo paquete de datos. En la
-\textbf{Figura} \ref{fig:multiplexado} se muestra el paquete de datos
+fig. \ref{fig:multiplexado} se muestra el paquete de datos
 obtenido al ingresar una señal senoidal por uno de los canales de
 entrada mientras el otro canal se encuentra conectado a
 GND.
@@ -91,7 +90,7 @@ externo y a su vez fueron ingresadas como entrada a la placa de sonido.
 Se registraron los valores de las unidades arbitrarias y su valores de
 tensión respectivo con el objetivo de ajustar una curva de calibración
 tanto de los canales de entrada como de los canales de salida de la
-placa.  En las \textbf{Figuras} \ref{fig:CalibracionEntrada} y
+placa.  En la fig. \ref{fig:CalibracionEntrada} y fig. 
 \ref{fig:CalibracionSalida} se muestran las curvas de calibración
 obtenidas.  Los datos medidos fueron ajustados linealmente obteniéndose
 las siguientes expresiones,
@@ -129,7 +128,7 @@ sonido realizamos un barrido en frecuencias generando señales
 sinusoidales de distintas frecuencias con la salida de la placa que
 fueron ingresada como entrada a la misma. Registramos la variación en la
 respuesta del sistema en función de la frecuencia, los resultados se
-muestran en las \textbf{Figuras} \ref{fig:bode44k1} y \ref{fig:bode192k}
+muestran en la fig. \ref{fig:bode44k1} y fig. \ref{fig:bode192k}
 para dos frecuencias de muestreo distintas.
 
 	\begin{figure}[!h]
@@ -151,8 +150,8 @@ la señal, para una frecuencia de muestreo configurada de \SI{192}{\kHz}}
 Para poder establecer el mínimo valor de señal de tensión que puede
 registrarse con la placa de sonido medimos el piso de rudio de la misma.
 Conectamos ambos canales de la entrada estéreo a GND y registramos la
-señal obtenida, los resultados para cada canal se muestran en las
-\textbf{Figuras} \ref{fig:RuidoIzquierdo} y \ref{fig:RuidoDerecho}.
+señal obtenida, los resultados para cada canal se muestran en la
+fig. \ref{fig:RuidoIzquierdo} y fig. \ref{fig:RuidoDerecho}.
 El valor del rudio RMS obtenido es de $\SI{277}{\uV}$. En las mismas figuras puede verse además como, aproximadamente, los primeros \SI{300}{\milli\second} de cada adquisición son ceros. Este tiempo de espera inicial se encontró siempre y no depende fuertemente de los parámetros con los que se define la adquisición. Esto parece indicar que esta latencia entre el momento en que la placa empieza a enviar datos al buffer y el momento en el que comienza realmente la adquisición es característico de la misma y no puede evitarse. De esta forma, todas las mediciones mostradas en este trabajo descartan esos primeros \SI{300}{\milli\second} de medición de manera de conservar solo la información relevante en cada experimento.  
 
 	\begin{figure}[h]
@@ -178,8 +177,19 @@ puerto de entrada estéreo.}
 En esta sección se describiran los resultados de las caracterizaciones de los componentes electrónicos utilizando la placa de sonido tanto como dispositivo de adquisición como generador de funciones. 
 	\subsection{Componente discreto: Diodo 1N4148}
 	\label{sec:discreto}
-	Se caracterizó la curva de corriente en función de la caida de tensión en un diodo rápido modelo 1N4148. Para esto se utilizó uno de los canales de salida de la placa como fuente de tensión. La misma se conectó en serie con el diodo a estudiar y una resistencia de carga de \SI{100}{\ohm}. La señal elegida fue una señal sinusoidal de frecuencia \SI{1}{\kilo\hertz} y amplitud 2 Vpp (máxima permitida por el dispositivo). La adquisición se realizó a dos canales, donde el primero se utilizó para medir la fuente y el segundo para la caída en el diodo. A partir de la diferencia entre estas mediciones se calculó la caída de tensión en la resistencia y luego la corriente. Con estos datos se realizó el gráfico que se muestra en la figura \ref{fig:diodo}, donde se muestra el resultado final de la caracterización. Cabe destacar que la placa de adquisición posee un filtro pasa altos en la entrada, por lo que el valor de continua de la medición se pierde en ambos canales. Esto es un problema para la medición de la caída en el diodo pues la misma no tiene valor medio cero. Esta es una limitación de la placa utilizada y no puede ser corregida sin información o hipótesis adicionales. En nuestro caso, basta con asumir que la corriente será cero cuando la fuente está apagada.   
-	
+	Se caracterizó la curva de corriente en función de la caida de tensión en un diodo rápido modelo 1N4148. Para esto se utilizó uno de los canales de salida de la placa como fuente de tensión. La misma se conectó en serie con el diodo a estudiar y una resistencia de carga de \SI{100}{\ohm}. La señal elegida fue una señal sinusoidal de frecuencia \SI{1}{\kilo\hertz} y amplitud 2 Vpp (máxima permitida por el dispositivo). La adquisición se realizó a dos canales, donde el primero se utilizó para medir la fuente y el segundo para la caída en la resistencia. A partir de estas se calculó la corriente y la caída de tensión en el diodo. Con estos datos se realizó el gráfico que se muestra en la fig. \ref{fig:diodo}, donde se muestra el resultado final de la caracterización. Cabe destacar que la placa de adquisición posee un filtro pasa altos en la entrada, por lo que el valor de continua de la medición se pierde en ambos canales. Esto es un problema para la medición de la caída en el diodo pues la misma no tiene valor medio cero. Esta es una limitación de la placa utilizada y no puede ser corregida sin información o hipótesis adicionales. En nuestro caso, basta con asumir que la corriente será cero cuando la fuente está apagada. Así, si llamamos $V_R$ a la caída de tensión en la resistencia y $\hat{V_R}$ a la tensión medida (sin el valor medio) estas difieren en una constante $k$ de la forma
+	\begin{equation}
+	V_R = \hat{V_R} + k.
+	\end{equation}
+Dicha constante se encuentra a partir del instante en que la fuente pasa por tensión cero. Usando esta información, la tensión y corrientes que circulan por el diodo se calculan a partir de la tensión de la fuente como
+	\begin{equation}
+	V_D = V_o - \hat{V_R} - k
+	\end{equation}
+	y
+	\begin{equation}
+	I_D = \frac{\hat{V_R}}{R} + \frac{k}{R},
+	\end{equation}
+	donde $R$ es el valor de la resistencia y $V_o$ la medición directa de la fuente (que no posee corrección pues es una señal con valor medio cero por construcción).
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=\textwidth]{imagenes/Diodo1N4148.png}
@@ -187,15 +197,38 @@ En esta sección se describiran los resultados de las caracterizaciones de los c
 		\label{fig:diodo}
 	\end{figure}
 	
-	\subsection{Integrado}	\label{sec:integrado}
+	\subsection{Componente integrado: Regulador LM317}	\label{sec:integrado}
 	
-	La caracterización del componente integrado quedó pendiente. Para esta se propone caracterizar el rechazo de ripple en un regulador LM317. Para esto, se plantea armar el circuito mostrado en la figura \ref{fig:lm317}. En este se plantea adquirir el ripple de la señal de entrada y el de la señal de salida utilizando ambos canales de la placa. Como es deseable utilizar una fuente con ripple controlable, se plantea el uso de un generador de funciones externo ya que se necesita una señal con valor medio distinto de cero. Otra posibilidad a investigar es la de adicionar al circuito lo necesario para sumar a las salidas de la placa (utilizadas para generar el ripple) una fuente de continua que de un valor medio a la señal.
+Se muestra a continuación la caracterizar del rechazo de \textit{ripple} en un regulador LM317. Para esto, se llevo a cabo el circuito mostrado en la fig. \ref{fig:lm317}. El mismo utiliza al integrado como un regulador de tensión donde la salida es aproximadamente
+\begin{equation}\label{eq:vout}
+V_o = 1.25\, \mathrm{V}\, (1 + \frac{R_2}{R_1}).
+\end{equation}
+Las mediciones fueron realizadas eligiendo $V_I$ como una señal continua de 9 V con a la que se le sumo una sinusoidal de amplitud 0.5 V y frecuencia regulable. La tensión de salida regulada fue de 4.95 V. 
+
+	\begin{figure}[h]
+	\centering
+		\includegraphics[width=\textwidth]{imagenes/lm317.pdf}
+		\caption{Circuito utilizado para la caracterización del rechazo de \textit{ripple} en un integrado LM317.}
+		\label{fig:lm317}
+	\end{figure}
+
+
+En la propuesta original, tanto $V_o$ como la parte oscilatoria de $V_I$ eran obtenidos de la placa de audio y se utilizó un capacitor de desacople en cada uno para evitar que las componentes de tensión continuas llegaran a la placa. No obstante, esta configuración presentó un nivel de ruido muy alto que no permitió la caracterización de los niveles pequeños de señal que se pretendía estudiar. Para solucionar esto se reemplazó la entrada por un generador de funciones comercial y se eliminó el capacitor de protección en el canal de entrada de la placa. En esta configuración se logró caracterizar el rechazo de \textit{ripple} de la placa a partir de calcular la transformada rápida de Fourier de la medición y quedarnos con un ancho de banda de aproximadamente 1 Hz alrededor de la frecuencia del \textit{ripple} en la entrada. En la fig. \ref{fig:fft} se muestra una medición típica de la densidad espectral de ruido a la salida del circuito cuando se estudió el rechazo de \textit{ripple} a 120 Hz. Se puede observar como componentes de ruido de linea a 50 Hz y 100 Hz se distinguen claramente. Por esta observación, se eligieron las frecuencias de sensado de manera de evitar los armónicos de la frecuencia de linea.  
 		
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\textwidth]{imagenes/lm317.pdf}
-		\caption{Circuito propuesto para la caracterización del rechazo de ripple en un integrado LM317.}
-		\label{fig:lm317}
+		\includegraphics[width=\textwidth]{imagenes/riple120.png}
+		\caption{Densidad espectral de la señal en la salida del regulador de tensión. Se observan picos en los armónicos de la frecuencia de linea y el pico correspondiente a la frecuencia del \textit{ripple} en la señal de entrada elegido en 120 Hz.}
+		\label{fig:fft}
+	\end{figure}
+		
+Con esta información se caracterizó el rechazo de \textit{ripple} en función de la frecuencia como se muestra en la fig. \ref{fig:rechazo}. En la misma se comparan los dos esquemas propuestos por el fabricante para la utilización del circuito \cite{datasheetlm317}, que informa un rechazo de 64 dB para el circuito esquematizado en la fig. \ref{fig:lm317} que disminuye a 57 dB si se remueve el capacitor $C_2$ (medido a 60 Hz). No obstante, nuestros resultados muestran valores de rechazo mucho peores a los informados por el fabricante, que mejoran a medida que aumenta la frecuencia. A partir de 1 kHz el \textit{ripple} se hace indistinguible del ruido de la medición.
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/rechazoriple.pdf}
+		\caption{Rechazo de \textit{ripple} en función de la frecuencia para las configuraciones de trabajo propuestas por el fabricante del integrado LM317.}
+		\label{fig:rechazo}
 	\end{figure}
 
 \clearpage
