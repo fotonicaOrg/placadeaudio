@@ -12,10 +12,9 @@
 \usepackage[colorlinks=true]{hyperref}
 
 
-\title{The Triangulation of Titling Data in Non-Linear Gaussian Fashion via $\rho$ Series\thanks{No procrastination}}
-\date{2017\\ December}
-\author{John Doe\\ Magic Department\thanks{I am no longer a member of this department}, Richard Miles University 
-\and Richard Row, \LaTeX\ Academy}
+\title{Preinforme: Caracterización de componentes electrónicos utilizando una placa de audio}
+\date{\today}
+\author{Micaela Toscani, Axel Lacapmesure y Guillermo Brinatti}
 
 \begin{document}
 \maketitle
@@ -121,7 +120,7 @@ Para poder caracterizar la respuesta en frencuencia de la placa de
 sonido realizamos un barrido en frecuencias generando señales
 sinusoidales de distintas frecuencias con la salida de la placa que
 fueron ingresada como entrada a la misma. Registramos la variación en la
-ganancia del sistema en función de la frecuencia, los resultados se
+respuesta del sistema en función de la frecuencia, los resultados se
 muestran en las \textbf{Figuras} \ref{fig:bode44k1} y \ref{fig:bode192k}
 para dos frecuencias de muestreo distintas.
 
@@ -146,7 +145,7 @@ registrarse con la placa de sonido medimos el piso de rudio de la misma.
 Conectamos ambos canales de la entrada estéreo a GND y registramos la
 señal obtenida, los resultados para cada canal se muestran en las
 \textbf{Figuras} \ref{fig:RuidoIzquierdo} y \ref{fig:RuidoDerecho}.
-El valor del rudio RMS obtenido es de $\SI{277}{\uV}$.
+El valor del rudio RMS obtenido es de $\SI{277}{\uV}$. En las mismas figuras puede verse además como, aproximadamente, los primeros \SI{300}{\milli\second} de cada adquisición son ceros. Este tiempo de espera inicial se encontró siempre y no depende fuertemente de los parámetros con los que se define la adquisición. Esto parece indicar que esta latencia entre el momento en que la placa empieza a enviar datos al buffer y el momento en el que comienza realmente la adquisición es característico de la misma y no puede evitarse. De esta forma, todas las mediciones mostradas en este trabajo descartan esos primeros \SI{300}{\milli\second} de medición de manera de conservar solo la información relevante en cada experimento.  
 
 	\begin{figure}[h]
 		\centering
@@ -168,27 +167,38 @@ puerto de entrada estéreo.}
 \section{Resultados}
 \label{sec:resultados}
 
-	\subsection{Discreto}
+En esta sección se describiran los resultados de las caracterizaciones de los componentes electrónicos utilizando la placa de sonido tanto como dispositivo de adquisición como generador de funciones. 
+	\subsection{Componente discreto: Diodo 1N4148}
 	\label{sec:discreto}
-	% Curva I-V
+	Se caracterizó la curva de corriente en función de la caida de tensión en un diodo rápido modelo 1N4148. Para esto se utilizó uno de los canales de salida de la placa como fuente de tensión. La misma se conectó en serie con el diodo a estudiar y una resistencia de carga de \SI{100}{\ohm}. La señal elegida fue una señal sinusoidal de frecuencia \SI{1}{\kilo\hertz} y amplitud 2 Vpp (máxima permitida por el dispositivo). La adquisición se realizó a dos canales, donde el primero se utilizó para medir la fuente y el segundo para la caída en el diodo. A partir de la diferencia entre estas mediciones se calculó la caída de tensión en la resistencia y luego la corriente. Con estos datos se realizó el gráfico que se muestra en la figura \ref{fig:diodo}, donde se muestra el resultado final de la caracterización. Cabe destacar que la placa de adquisición posee un filtro pasa altos en la entrada, por lo que el valor de continua de la medición se pierde en ambos canales. Esto es un problema para la medición de la caída en el diodo pues la misma no tiene valor medio cero. Esta es una limitación de la placa utilizada y no puede ser corregida sin información o hipótesis adicionales. En nuestro caso, basta con asumir que la corriente será cero cuando la fuente está apagada.   
 	
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=\textwidth]{imagenes/Diodo1N4148.png}
-		\caption{}
+		\caption{Curva de corriente en función de la tensión para un diodo 1N4148 caracterizada utilizando la placa de sonido tanto como fuente de tensión como placa de adquisición.}
+		\label{fig:diodo}
 	\end{figure}
 	
-	\subsection{Integrado}
-	\label{sec:integrado}
+	\subsection{Integrado}	\label{sec:integrado}
 	
+	La caracterización del componente integrado quedó pendiente. Para esta se propone caracterizar el rechazo de ripple en un regulador LM317. Para esto, se plantea armar el circuito mostrado en la figura \ref{fig:lm317}. En este se plantea adquirir el ripple de la señal de entrada y el de la señal de salida utilizando ambos canales de la placa. Como es deseable utilizar una fuente con ripple controlable, se plantea el uso de un generador de funciones externo ya que se necesita una señal con valor medio distinto de cero. Otra posibilidad a investigar es la de adicionar al circuito lo necesario para sumar a las salidas de la placa (utilizadas para generar el ripple) una fuente de continua que de un valor medio a la señal.
+		
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/circuitolm317.jpg}
+		\caption{Circuito propuesto para la caracterización del rechazo de ripple en un integrado LM317.}
+		\label{fig:lm317}
+	\end{figure}
 
-
+\clearpage
 
 \begin{thebibliography}{99}
 
 	\bibitem{repo} Repositorio en GitHub de la biblioteca propia utilizada en el trabajo, \href{https://github.com/fotonicaOrg/placadeaudio}{URL: https://github.com/fotonicaOrg/placadeaudio}, actualizado el 19/09/2018. La biblioteca está programada en el archivo \emph{PlacaAudio.py}.
 	\bibitem{pyaudio} Página web oficial de PyAudio, \href{https://people.csail.mit.edu/hubert/pyaudio/}{URL: https://people.csail.mit.edu/hubert/pyaudio/}, accedido el 19/09/2018.
 	\bibitem{portaudio} Página web oficial de PortAudio, \href{http://www.portaudio.com/}{URL: http://www.portaudio.com/}, accedido el 19/09/2018.
+	
+	\bibitem{datasheetlm317} Hoja de datos del regulador LM317 proporcionada por Texas Instruments.  \href{http://www.ti.com/lit/ds/symlink/lm317.pdf}{URL: http://www.ti.com/lit/ds/symlink/lm317.pdf}
 
 \end{thebibliography}
 
