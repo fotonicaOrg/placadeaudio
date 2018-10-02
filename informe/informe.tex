@@ -11,8 +11,10 @@
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage[colorlinks=true]{hyperref}
 
+\usepackage{booktabs}
+\usepackage{multirow}
 
-\title{Preinforme: Caracterización de componentes electrónicos utilizando una placa de audio}
+\title{Caracterización de componentes electrónicos utilizando una placa de audio}
 \date{\today}
 \author{Micaela Toscani, Axel Lacapmesure y Guillermo Brinatti}
 
@@ -217,7 +219,7 @@ En la propuesta original, tanto $V_o$ como la parte oscilatoria de $V_I$ eran ob
 		
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\textwidth]{imagenes/riple120.png}
+		\includegraphics[width=0.9\textwidth]{imagenes/riple120.png}
 		\caption{Densidad espectral de la señal en la salida del regulador de tensión. Se observan picos en los armónicos de la frecuencia de linea y el pico correspondiente a la frecuencia del \textit{ripple} en la señal de entrada elegido en 120 Hz.}
 		\label{fig:fft}
 	\end{figure}
@@ -226,10 +228,63 @@ Con esta información se caracterizó el rechazo de \textit{ripple} en función 
 
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\textwidth]{imagenes/rechazoriple.pdf}
+		\includegraphics[width=0.9\textwidth]{imagenes/rechazoriple.pdf}
 		\caption{Rechazo de \textit{ripple} en función de la frecuencia para las configuraciones de trabajo propuestas por el fabricante del integrado LM317.}
 		\label{fig:rechazo}
 	\end{figure}
+
+\clearpage
+
+
+\section{Características Eléctricas}
+
+\subsection{Placa de audio Realtek}
+\begin{table}[h!]
+\begin{tabular}{llcccc}  
+\toprule
+PARÁMETRO   &   CONDICIONES   & MIN & TYP   & MAX   & UNIDAD\\
+\midrule
+Ancho de banda & $f_{muestreo} = \SI{44.1}{\kHz}$ & 30 & & \num{15e3} &
+\si{\Hz}\\
+$V_{in}$ & & 0 & & 3.5 & \si{\V}\\
+$V_{out}$&  & 0 & & 3.5 & \si{\V}\\
+Calibracion salida & & &  1.620 & & $\si{\V}\cdot \text{ctas}$\\
+Calibracion entrada & & &  2.555 & & $\si{\V}\cdot \text{ctas}$\\
+Ruido RMS & & & 277 & & \si{\uV}\\
+Rango Dinámico & & \num{277e-6} & & 3.5 & \si{\V}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Diodo 1N4148}
+\begin{table}[h!]
+\begin{tabular}{llcccc}  
+\toprule
+PARÁMETRO   &   CONDICIONES   & MIN & TYP   & MAX   & UNIDAD\\
+\midrule
+Corriente umbral & $T_{amb} = \SI{25}{\degreeCelsius}$ & & 0.7 & &
+\si{\V}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Integrado LM317}
+\begin{table}[h!]
+\begin{tabular}{lllcccc}  
+\toprule
+PARÁMETRO   &   \multicolumn{2}{c}{CONDICIONES}  & MIN & TYP   & MAX   & UNIDAD\\
+\midrule
+\multirow{4}{*}{Rechazo ripple} & \multirow{2}{*}{$V_0 = \SI{4.96}{\V} \; f = \SI{60}{\Hz}$} & $C_{ADJ} = \SI{0}{\micro\farad}$ & & 23.9 & & \si{\dB}\\
+    & & $C_{ADJ} = \SI{10}{\micro\farad}$ & & 29.6 & &\si{\dB}\\
+    & \multirow{2}{*}{$V_0 = \SI{4.96}{\V} \; f = \SI{120}{\Hz}$} & $C_{ADJ} = \SI{0}{\micro\farad}$ & & 28 & &\si{\dB}\\
+    & & $C_{ADJ} = \SI{10}{\micro\farad}$ & & 30.1 & &\si{\dB}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
 
 \clearpage
 
