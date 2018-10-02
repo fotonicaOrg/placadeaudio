@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+# Para ignorar archivos de latex
+*.pdf
+*.out
+*.aux
+*.synctex.gz
