@@ -53,8 +53,7 @@ El objetivo de este trabajo consiste en describir la curva de respuesta de un di
     % linealidad, problemática de tirar los puntos iniciales, gráfico
     % para describir multiplexado/demulitiplexado
 
-En el presente trabajo utilizamos la placa de sonido \emph{Realtek
-"MODELO"} para generación y adquisición de señales.  Para ello
+En el presente trabajo utilizamos la placa de sonido \emph{SupremeFX} modelo \emph{S1220A} para generación y adquisición de señales.  Para ello
 utilizamos el puerto de salida analógica estéreo principal y el puerto
 de entrada analógica estéreo \emph{line-in}, respectivamente.
 
@@ -89,13 +88,7 @@ calibración tanto de la entrada como de la salida de la placa de sonido.
 Para ello generamos con la placa de sonido señales sinusoidales de
 distintas amplitudes, estas señales fueron medidas con un osciloscopio
 externo y a su vez fueron ingresadas como entrada a la placa de sonido.
-Se registraron los valores de las unidades arbitrarias y su valores de
-tensión respectivo con el objetivo de ajustar una curva de calibración
-tanto de los canales de entrada como de los canales de salida de la
-placa.  En la fig. \ref{fig:CalibracionEntrada} y fig. 
-\ref{fig:CalibracionSalida} se muestran las curvas de calibración
-obtenidas.  Los datos medidos fueron ajustados linealmente obteniéndose
-las siguientes expresiones,
+Se registraron los valores de la amplitud pico-pico de las unidades arbitrarias y su valores de tensión respectivos con el objetivo de ajustar una curva de calibración tanto de los canales de entrada como de los canales de salida de la placa.  En la fig. \ref{fig:CalibracionEntrada} y fig. \ref{fig:CalibracionSalida} se muestran las curvas de calibración obtenidas.  Los datos medidos fueron ajustados linealmente obteniéndose las siguientes expresiones,
 	
 \begin{equation*}
 	 \text{Tensión de salida} = \SI{1.620}{\V} \times Cuentas% + \SI{0.1080}{\V}
@@ -248,8 +241,8 @@ Ancho de banda & $f_{muestreo} = \SI{44.1}{\kHz}$ & 30 & & \num{15e3} &
 \si{\Hz}\\
 $V_{in}$ & & 0 & & 3.5 & \si{\V}\\
 $V_{out}$&  & 0 & & 3.5 & \si{\V}\\
-Calibracion salida & & &  1.620 & & $\si{\V}\cdot \text{ctas}$\\
-Calibracion entrada & & &  2.555 & & $\si{\V}\cdot \text{ctas}$\\
+Calibracion salida & & &  1.620 & & $\si{\V} / \text{ctas}$\\
+Calibracion entrada & & &  2.555 & & $\si{\V} / \text{ctas}$\\
 Ruido RMS & & & 277 & & \si{\uV}\\
 Rango Dinámico & & \num{277e-6} & & 3.5 & \si{\V}\\
 \bottomrule
